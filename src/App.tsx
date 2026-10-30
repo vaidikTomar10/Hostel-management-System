@@ -300,6 +300,7 @@ export default function App() {
         complaints={complaints}
         adminUser={adminUser}
         slotAvailable={slotAvailable}
+        onLogout={handleAdminLogout}
       />
 
       {/* Dynamic Toast Banner */}

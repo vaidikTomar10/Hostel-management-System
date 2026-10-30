@@ -4,6 +4,7 @@ import {
   GraduationCap,
   ShieldCheck,
   CheckCircle2,
+  LogOut,
 } from 'lucide-react';
 import { Complaint, AdminAccount } from '../types';
 
@@ -13,6 +14,7 @@ interface Props {
   complaints: Complaint[];
   adminUser?: AdminAccount | null;
   slotAvailable?: boolean;
+  onLogout?: () => void;
 }
 
 export const Navbar: React.FC<Props> = ({
@@ -21,6 +23,7 @@ export const Navbar: React.FC<Props> = ({
   complaints,
   adminUser,
   slotAvailable,
+  onLogout,
 }) => {
   const pendingCount = complaints.filter((c) => c.status === 'pending').length;
   const resolvedCount = complaints.filter((c) => c.status === 'resolved').length;
@@ -68,7 +71,7 @@ export const Navbar: React.FC<Props> = ({
                 id="role-switch-student"
                 type="button"
                 onClick={() => onRoleChange('student')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   activeRole === 'student'
                     ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900'
@@ -82,7 +85,7 @@ export const Navbar: React.FC<Props> = ({
                 id="role-switch-admin"
                 type="button"
                 onClick={() => onRoleChange('admin')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all relative ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all relative cursor-pointer ${
                   activeRole === 'admin'
                     ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900'
@@ -111,6 +114,21 @@ export const Navbar: React.FC<Props> = ({
                 )}
               </button>
             </div>
+
+            {/* Dedicated Admin Logout button when logged in */}
+            {adminUser && onLogout && (
+              <button
+                id="navbar-admin-logout-btn"
+                type="button"
+                onClick={onLogout}
+                title={`Log out from Warden Admin (@${adminUser.username})`}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border border-rose-200/90 rounded-xl text-xs font-bold transition-all shadow-xs hover:shadow-sm cursor-pointer active:scale-95"
+              >
+                <LogOut size={13} className="stroke-[2.5]" />
+                <span className="hidden sm:inline">Log Out</span>
+                <span className="sm:hidden">Exit</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

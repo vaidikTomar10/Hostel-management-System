@@ -68,6 +68,7 @@ export const AdminPortal: React.FC<Props> = ({
     error?: string;
     recordCountDetected?: number;
   } | null>(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     fetch('/api/supabase/status')
@@ -230,16 +231,51 @@ export const AdminPortal: React.FC<Props> = ({
             <button
               id="admin-logout-btn"
               type="button"
-              onClick={onLogout}
+              onClick={() => setShowLogoutModal(true)}
               title="Log out from administrator desk"
-              className="ml-2 px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 border border-slate-200 hover:border-rose-200 cursor-pointer"
+              className="ml-2 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-rose-200 cursor-pointer shadow-xs active:scale-95"
             >
-              <LogOut size={13} />
+              <LogOut size={13} className="stroke-[2.5]" />
               <span>Log Out</span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Admin Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-150">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4 shadow-inner">
+              <LogOut size={22} className="stroke-[2.5]" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 tracking-tight">Log Out from Warden Desk?</h3>
+            <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+              You will be signed out of the Administrator account (@{adminUser.username}). You can log back in at any time with your credentials.
+            </p>
+            <div className="flex items-center gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+              >
+                Stay Logged In
+              </button>
+              <button
+                id="confirm-logout-btn"
+                type="button"
+                onClick={() => {
+                  setShowLogoutModal(false);
+                  onLogout();
+                }}
+                className="flex-1 py-2.5 px-4 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-600/20 transition-all cursor-pointer active:scale-95"
+              >
+                Yes, Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Supabase Status Alert Banner */}
       {supabaseStatus && !supabaseStatus.connected && (
