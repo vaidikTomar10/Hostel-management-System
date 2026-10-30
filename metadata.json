@@ -1,0 +1,6 @@
+{
+  "name": "Tulsidas Hostel Complaint Management",
+  "description": "Online maintenance portal for Tulsidas Hostel residents to register maintenance issues by category with Supabase backend integration for database storage and administration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
